@@ -1,8 +1,15 @@
 import React from "react";
-import { View, Text, StyleSheet, FlatList } from "react-native";
+import {
+  View,
+  Text,
+  StyleSheet,
+  FlatList,
+  TouchableOpacity,
+} from "react-native";
+import { withNavigation } from "react-navigation";
 import ResultItem from "./ResultItem";
 
-const ResultsList = ({ title, results }) => {
+const ResultsList = ({ title, results, navigation }) => {
   return (
     <View style={styles.container}>
       <Text style={styles.title}>{title}</Text>
@@ -12,7 +19,13 @@ const ResultsList = ({ title, results }) => {
         keyExtractor={(result) => result.id}
         showsHorizontalScrollIndicator={false}
         renderItem={({ item }) => {
-          return <ResultItem result={item} />;
+          return (
+            <TouchableOpacity
+              onPress={() => navigation.navigate("ResultsShow")}
+            >
+              <ResultItem result={item} />
+            </TouchableOpacity>
+          );
         }}
       />
     </View>
@@ -31,4 +44,5 @@ const styles = StyleSheet.create({
   },
 });
 
-export default ResultsList;
+// HOC allowing access to "navigation" prop without having to prop drill
+export default withNavigation(ResultsList);
